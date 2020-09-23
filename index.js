@@ -250,7 +250,6 @@ const getModel_simulations = (request, response) => {
   })
 }
 
-// ?
 const addModel_simulation = (request, response) => {
   const { description, package, symbol_crop } = request.body
   pool.query('INSERT INTO model_simulation (id, description, package, symbol_crop ) VALUES (nextval(\'seq_model_simulation_id\'),$1,$2,$3)', [description, package, symbol_crop], error => {
@@ -262,6 +261,7 @@ const addModel_simulation = (request, response) => {
   })
 }
 
+// ?
 const updateModel_simulation = (request, response) => {
   const { id, description, package, symbol_crop } = request.body
   pool.query('UPDATE model_simulation set description=$1, package=$2, symbol_crop=$3 where id=$4', [description, package, symbol_crop, id], error => {
