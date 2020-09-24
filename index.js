@@ -294,6 +294,39 @@ const getCultivars = (request, response) => {
   })
 }
 
+const addCultivar = (request, response) => {
+  const { description, crop, ecotype } = request.body
+  pool.query('INSERT INTO cultivar (id, description, crop, ecotype) VALUES (nextval(\'seq_cultivar_id\'),$1)', [description, crop, ecotype], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Cultivar added.' })
+  })
+}
+
+const updateCultivar = (request, response) => {
+  const { id, description, crop, ecotype } = request.body
+  pool.query('UPDATE cultivar set description=$1 crop=$2, ecotype=$3 where id=$4', [description, crop, ecotype, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Cultivar updated.' })
+  })
+}
+
+const deleteCultivar = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM cutlivar where id = $1', [id], error => {
+    if (error) {
+      console.log(error);
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Cultivar deleted.' })
+  })
+}
+
 // API CRUD CULTIVAR_MODEL_SIMULATION
 const getCultivars_model_simulation = (request, response) => {
   pool.query('SELECT * FROM cultivar_model_simulation', (error, results) => {
