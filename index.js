@@ -296,7 +296,7 @@ const getCultivars = (request, response) => {
 
 const addCultivar = (request, response) => {
   const { description, crop, ecotype } = request.body
-  pool.query('INSERT INTO cultivar (id, description, crop, ecotype) VALUES (nextval(\'seq_cultivar_id\'),$1)', [description, crop, ecotype], error => {
+  pool.query('INSERT INTO cultivar (id, description, crop, ecotype) VALUES (nextval(\'seq_cultivar_id\'),$1,2$,3$)', [description, crop, ecotype], error => {
     if (error) {
       console.log(error)
       throw error
@@ -347,8 +347,41 @@ const getCultivars_variable = (request, response) => {
   })
 }
 
+// const addCultivar_variable = (request, response) => {
+//   const { variable, data_type, data_value } = request.body
+//   pool.query('INSERT INTO cultivar_variable (cultivar,variable, data_type, data_value) VALUES (nextval(\'seq_variable_type_id\'),$1, $2,$3)', [variable, data_type, data_value], error => {
+//     if (error) {
+//       console.log(error)
+//       throw error
+//     }
+//     response.status(201).json({ status: 'success', message: 'Cultivar_Variable added.' })
+//   })
+// }
+
+const updateCultivar_variable = (request, response) => {
+  const { variable, data_type, data_value } = request.body
+  pool.query('UPDATE cultivar_variable set description = $1, data_type = $2, data_value= $3 where cultivar = $4', [variable, data_type, data_value, cultivar], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Cultivar_Variable updated.' })
+  })
+}
+
+const deleteCultivar_variable = (request, response) => {
+  const { cultivar } = request.body
+  pool.query('DELETE FROM cultivar_variable where cultivar = $1', [cultivar], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Cultivar_Variable deleted.' })
+  })
+}
+
 // API CRUD DATA_TYPE
-const getDatas_type = (request, response) => {
+const getData_types = (request, response) => {
   pool.query('SELECT * FROM data_type', (error, results) => {
     if (error) {
       throw error
@@ -357,7 +390,124 @@ const getDatas_type = (request, response) => {
   })
 }
 
+const addData_type = (request, response) => {
+  const { description, observed } = request.body
+  pool.query('INSERT INTO data_type (id, description, observed) VALUES (nextval(\'seq_data_type_id\'),$1, $2)', [description, observed], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Data_type added.' })
+  })
+}
+
+const updateData_type = (request, response) => {
+  const { id, description, observed } = request.body
+  pool.query('UPDATE data_type set description = $1, observed = $2 where id = $3', [description, observed, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Data_type updated.' })
+  })
+}
+
+const deleteData_type = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM data_type where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Data_type deleted.' })
+  })
+}
+
 // API CRUD ECOTYPE
+const getEcotypes = (request, response) => {
+  pool.query('SELECT * FROM ecotype', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addEcotype = (request, response) => {
+  const { id, name } = request.body
+  pool.query('INSERT INTO ecotype(id, name) VALUES ($1, $2)', [id, name], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Ecotype added.' })
+  })
+}
+
+const updateEcotype = (request, response) => {
+  const { id, name } = request.body
+  pool.query('UPDATE ecotype set name = $1 where id = $2', [name, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Ecotype updated.' })
+  })
+}
+
+const deleteEcotype = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM ecotype where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Ecotype deleted.' })
+  })
+}
+
+// API CRUD ECOTYPE_VARIABLE
+const getEcotype_variables = (request, response) => {
+  pool.query('SELECT * FROM ecotype_variable', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addEcotype_variable = (request, response) => {
+  const { ecotype, variable, mode_simulation, data_type, data_value } = request.body
+  pool.query('INSERT INTO ecotype_variable (ecotype, variable, model_simulation,  data_type, data_value) VALUES ($1, $2, $3, $4 ,$5)', [ecotype, variable, mode_simulation, data_type, data_value], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Ecotype_variable added.' })
+  })
+}
+
+const updateEcotype_variable = (request, response) => {
+  const { ecotype, variable, mode_simulation, data_type, data_value } = request.body
+  pool.query('UPDATE ecotype_variable set variable = $1, model_simulation= $2,  data_type= $3, data_value= $4 where ecotype = $5', [ecotype, variable, mode_simulation, data_type, data_value], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Ecotype_variable updated.' })
+  })
+}
+
+const deleteEcotype_variable = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM ecotype_variable where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'xxx deleted.' })
+  })
+}
 
 // API CRUD EXPERIMENT
 const getExperiments = (request, response) => {
@@ -380,7 +530,15 @@ const getExperiments = (request, response) => {
 //   })
 // }
 
-// API CRUD 
+
+
+// API CRUD
+// API CRUD
+// API CRUD
+// API CRUD
+// API CRUD
+// API CRUD
+// API CRUD
 
 // API Endpoint
 app
@@ -472,12 +630,36 @@ app
 app
   .route('/api/cultivar_variable')
   .get(getCultivars_variable)
+  //.post(addCultivar_variable)
+  .put(updateCultivar_variable)
+  .delete(deleteCultivar_variable)
 
 // API END Point Data_Type
 app
   .route('/api/data_type')
   // GET endpoint
-  .get(getDatas_type)
+  .get(getData_types)
+  .post(addData_type)
+  .put(updateData_type)
+  .delete(deleteData_type)
+
+// API END Point Ecotype
+app
+  .route('/api/ecotype')
+  // GET endpoint
+  .get(getEcotypes)
+  .post(addEcotype)
+  .put(updateEcotype)
+  .delete(deleteEcotype)
+
+// API END Point Ecotype_variable
+app
+  .route('/api/ecotype_variable')
+  // GET endpoint
+  .get(getEcotype_variables)
+  .post(addEcotype_variable)
+  .put(updateEcotype_variable)
+  .delete(deleteEcotype_variable)
 
 // API END Experiment
 app
