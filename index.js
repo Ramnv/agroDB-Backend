@@ -532,11 +532,261 @@ const getExperiments = (request, response) => {
 
 
 
-// API CRUD
-// API CRUD
-// API CRUD
-// API CRUD
-// API CRUD
+// API CRUD EXPERIMENT_CONDITION
+const getExperiment_conditions = (request, response) => {
+  pool.query('SELECT * FROM experiment_condition', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addExperiment_condition = (request, response) => {
+  const { experiment, sequence, icbl, sh2o, snh4, sno3 } = request.body
+  pool.query('INSERT INTO experiment_condition(id, experiment, sequence, icbl, sh2o, snh4, sno3) VALUES (nextval(\'experiment_condition_id_seq\'),$1, $2, $3, $4, $5, $6)', [experiment, sequence, icbl, sh2o, snh4, sno3], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_condition added.' })
+  })
+}
+
+const updateExperiment_condition = (request, response) => {
+  const { xxx } = request.body
+  pool.query('UPDATE experiment_condition set experiment=$1, sequence=$2, icbl=$3, sh2o=$4, snh4=$5, sno3=$6 where id = $7', [experiment, sequence, icbl, sh2o, snh4, sno3, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_condition updated.' })
+  })
+}
+
+const deleteExperiment_condition = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM experiment_condition where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_condition deleted.' })
+  })
+}
+
+// API CRUD EXPERIMENT_CONTROL
+const getExperiment_controls = (request, response) => {
+  pool.query('SELECT * FROM experiment_control', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addExperiment_control = (request, response) => {
+  const { experiment, nitrogenio, disiase, co2, water, step, mesom, m_organic, n_organic, simbiose, rows, plants_per_row } = request.body
+  pool.query('INSERT INTO experiment_control(experiment, nitrogenio, disiase, co2, water, step, mesom, m_organic, n_organic, simbiose, rows, plants_per_row) VALUES ($1, $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)', [experiment, nitrogenio, disiase, co2, water, step, mesom, m_organic, n_organic, simbiose, rows, plants_per_row], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_control added.' })
+  })
+}
+
+const updateExperiment_control = (request, response) => {
+  const { nitrogenio, disiase, co2, water, step, mesom, m_organic, n_organic, simbiose, rows, plants_per_row } = request.body
+  pool.query('UPDATE experiment_control set nitrogenio=$1, disiase=$2, co2=$3, water=$4, step=$5, mesom=$6, m_organic=$7, n_organic=$8, simbiose=$9, rows=$10, plants_per_row=$11 where id = $12', [nitrogenio, disiase, co2, water, step, mesom, m_organic, n_organic, simbiose, rows, plants_per_row], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_control updated.' })
+  })
+}
+
+const deleteExperiment_control = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM experiment_control where experiment = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_control deleted.' })
+  })
+}
+// API CRUD EXPERIMENT_CULTIVAR
+const getExperiment_cultivars = (request, response) => {
+  pool.query('SELECT * FROM experiment_cultivar', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addExperiment_cultivar = (request, response) => {
+  const { experiment, cultivar, complement } = request.body
+  pool.query('INSERT INTO experiment_cultivar(experiment, cultivar, complement) VALUES ($1, $2, $3)', [experiment, cultivar, complement], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_cultivar added.' })
+  })
+}
+
+const updateExperiment_cultivar = (request, response) => {
+  const { experiment, cultivar, complement } = request.body
+  pool.query('UPDATE experiment_cultivar set cultivar = $1, complement = $2 where experiment = $3', [experiment, cultivar, complement], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_cultivar updated.' })
+  })
+}
+
+const deleteExperiment_cultivar = (request, response) => {
+  const { experiment } = request.body
+  pool.query('DELETE FROM experiment_cultivar where experiment = $1', [experiment], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_cultivar deleted.' })
+  })
+}
+
+// API CRUD EXPERIMENT_DATA
+const getExperiment_datas = (request, response) => {
+  pool.query('SELECT * FROM experiment_data', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addExperiment_data = (request, response) => {
+  const { experiment, variable, data_type, data_value_simulated, data_value_observed, data_julian, date, time} = request.body
+  pool.query('INSERT INTO experiment_data(nextval(\'experiment_data_id_seq\'), experiment, variable, data_type, data_value_simulated, data_value_observed, data_julian, date, time) VALUES (nextval $1, $2, $3,$4,$5,$6,$7,$8)', [experiment, variable, data_type, data_value_simulated, data_value_observed, data_julian, date, time], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_data added.' })
+  })
+}
+
+const updateExperiment_data = (request, response) => {
+  const { experiment, variable, data_type, data_value_simulated, data_value_observed, data_julian, date, time } = request.body
+  pool.query('UPDATE experiment_data set experiment= $1, variable= $2, data_type= $3, data_value_simulated= $4, data_value_observed= $5, data_julian= $6, date= $7, time = $8 where experiment = $9', [experiment, variable, data_type, data_value_simulated, data_value_observed, data_julian, date, time, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_data updated.' })
+  })
+}
+
+const deleteExperiment_data = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM experiment_data where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_data deleted.' })
+  })
+}
+// API CRUD EXPERIMENT_DATE
+const getExperiment_dates = (request, response) => {
+  pool.query('SELECT * FROM experiment_date', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addExperiment_date = (request, response) => {
+  const { experiment, day, month} = request.body
+  pool.query('INSERT INTO experiment_data(nextval(\'id_experiment_date\'), experiment, day, month) VALUES (nextval $1, $2, $3)', [experiment, day, month], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_date added.' })
+  })
+}
+
+const updateExperiment_date = (request, response) => {
+  const { experiment, day, month } = request.body
+  pool.query('UPDATE experiment_date set experiment=$1, day=$2, month=$3 where id = $4', [experiment, day, month, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_date updated.' })
+  })
+}
+
+const deleteExperiment_date = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM experiment_date where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_date deleted.' })
+  })
+}
+
+// API CRUD EXPERIMENT_FERTILIZER
+const getExperiment_fertilizers = (request, response) => {
+  pool.query('SELECT * FROM experiment_fertilizer', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addExperiment_fertilizer = (request, response) => {
+  const { experiment, sequence, fmcd, facd, fdep, famn, famp,date} = request.body
+  pool.query('INSERT INTO experiment_fertilizer(nextval(\'experiment_fertilizer_id_seq\'), experiment, sequence, fmcd, facd, fdep, famn, famp,date) VALUES (nextval $1, $2, $3,$4,$5,$6,$7,$8)', [experiment, sequence, fmcd, facd, fdep, famn, famp,date], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_fertilizer added.' })
+  })
+}
+
+const updateExperiment_fertilizer = (request, response) => {
+  const { id, experiment, sequence, fmcd, facd, fdep, famn, famp,date } = request.body
+  pool.query('UPDATE experiment_fertilizer set experiment=$1, sequence=$2, fmcd=$3, facd=$4, fdep=$5, famn=$6, famp=$7,date=$8 where id = $9', [experiment, sequence, fmcd, facd, fdep, famn, famp,date, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_fertilizer updated.' })
+  })
+}
+
+const deleteExperiment_fertilizer = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM experiment_fertilizer where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_fertilizer deleted.' })
+  })
+}
 // API CRUD
 // API CRUD
 
@@ -666,6 +916,53 @@ app
   .route('/api/experiment')
   .get(getExperiments)
 
+// API END Experiment_condition
+app
+  .route('/api/experiment_condition')
+  .get(getExperiment_conditions)
+  .post(addExperiment_condition)
+  .put(updateExperiment_condition)
+  .delete(deleteExperiment_condition)
+
+// API END Experiment_control
+app
+  .route('/api/experiment_control')
+  .get(getExperiment_controls)
+  .post(addExperiment_control)
+  .put(updateExperiment_control)
+  .delete(deleteExperiment_control)
+
+// API END Experiment_cultivar
+app
+  .route('/api/experiment_cultivar')
+  .get(getExperiment_cultivars)
+  .post(addExperiment_cultivar)
+  .put(updateExperiment_cultivar)
+  .delete(deleteExperiment_cultivar)
+
+// API END Experiment_data
+app
+  .route('/api/experiment_data')
+  .get(getExperiment_datas)
+  .post(addExperiment_data)
+  .put(updateExperiment_data)
+  .delete(deleteExperiment_data)
+
+// API END Experiment_date
+app
+  .route('/api/experiment_date')
+  .get(getExperiment_dates)
+  .post(addExperiment_date)
+  .put(updateExperiment_date)
+  .delete(deleteExperiment_date)
+  
+  // API END Experiment_fertilizer
+  app
+    .route('/api/experiment_fertilizer')
+    .get(getExperiment_fertilizers)
+    .post(addExperiment_fertilizer)
+    .put(updateExperiment_fertilizer)
+    .delete(deleteExperiment_fertilizer)
 // API END Point
 app
   .route('/api/')
