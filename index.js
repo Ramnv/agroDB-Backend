@@ -1126,7 +1126,7 @@ const getStations = (request, response) => {
 }
 
 const addStation = (request, response) => {
-  const { description, city, nickname, google, organization, code_organization, station_type  ,latitude, longitude, altitude, active } = request.body
+  const { description, city, nickname, google, organization, code_organization, station_type, latitude, longitude, altitude, active } = request.body
   pool.query('INSERT INTO station (xxx) VALUES (nextval(\'___\'),$1, $2)', [xxx], error => {
     if (error) {
       console.log(error)
@@ -1213,7 +1213,7 @@ const getTreatments = (request, response) => {
 }
 
 const addTreatment = (request, response) => {
-  const { cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant} = request.body
+  const { cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant } = request.body
   pool.query('INSERT INTO treatment(id, cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant) VALUES (nextval(\'id_treatment\'),$1, $2, $3,$4,$5,$6,$7,$8,$9,$10,$11)', [cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant], error => {
     if (error) {
       console.log(error)
@@ -1242,6 +1242,135 @@ const deleteTreatment = (request, response) => {
       throw error
     }
     response.status(201).json({ status: 'success', message: 'Treatment deleted.' })
+  })
+}
+
+// API PEOPLE_ORGANIZATION
+const getPeople_organizations = (request, response) => {
+  pool.query('SELECT * FROM people_organization', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addPeople_organization = (request, response) => {
+  const { people, organization } = request.body
+  pool.query('INSERT INTO people_organization(people, organization) VALUES ($1, $2)', [people, organization], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'People_organization added.' })
+  })
+}
+
+// const updatePeople_organization = (request, response) => {
+//   const { people, organization } = request.body
+//   pool.query('UPDATE people_organization set people=$, organization = $,  where id = $', [xxx], error => {
+//     if (error) {
+//       console.log(error)
+//       throw error
+//     }
+//     response.status(201).json({ status: 'success', message: 'People_organization updated.' })
+//   })
+// }
+
+// const deletePeople_organization = (request, response) => {
+//   const { id } = request.body
+//   pool.query('DELETE FROM people_organization where id = $1', [id], error => {
+//     if (error) {
+//       console.log(error)
+//       throw error
+//     }
+//     response.status(201).json({ status: 'success', message: 'People_organization deleted.' })
+//   })
+// }
+
+// API SOIL
+const getSoils = (request, response) => {
+  pool.query('SELECT * FROM soil', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addSoil = (request, response) => {
+  const { description, organization, station, class_soil, io, latitude, longitude, country, descountry, desfamily } = request.body
+  pool.query('INSERT INTO soil(description, organization, station, class_soil, io, latitude, longitude, country, descountry, desfamily) VALUES (nextval(\'seq_soil_id\'),$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)', [description, organization, station, class_soil, io, latitude, longitude, country, descountry, desfamily], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Soil added.' })
+  })
+}
+
+const updateSoil = (request, response) => {
+  const { id, description, organization, station, class_soil, io, latitude, longitude, country, descountry, desfamily } = request.body
+  pool.query('UPDATE soil set description= $, organization= $, station= $, class_soil= $, io= $, latitude= $, longitude= $, country= $, descountry= $, desfamily = $,  where id = $', [description, organization, station, class_soil, io, latitude, longitude, country, descountry, desfamily, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Soil updated.' })
+  })
+}
+
+const deleteSoil = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM xxx where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Soil deleted.' })
+  })
+}
+
+// API WEATHER_DATA
+const getWeather_datas = (request, response) => {
+  pool.query('SELECT * FROM weather_data', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addWeather_data = (request, response) => {
+  const { date_import, time_import, io, station } = request.body
+  pool.query('INSERT INTO weather_data(date_import, time_import, io, station) VALUES (nextval(\'___\'),$1, $2,$3,$4)', [date_import, time_import, io, station], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Weather_data added.' })
+  })
+}
+
+const updateWeather_data = (request, response) => {
+  const { id, date_import, time_import, io, station } = request.body
+  pool.query('UPDATE weather_data set date_import= $, time_import= $, io= $, station = $,  where id = $', [date_import, time_import, io, station, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Weather_data updated.' })
+  })
+}
+
+const deleteWeather_data = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM weather_data where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Weather_data deleted.' })
   })
 }
 
@@ -1494,14 +1623,38 @@ app
   .post(addTrap_type)
   .put(updateTrap_type)
   .delete(deleteTrap_type)
-  
-  // API END Treatment
-  app
-    .route('/api/treatment')
-    .get(getTreatments)
-    .post(addTreatment)
-    .put(updateTreatment)
-    .delete(deleteTreatment)
+
+// API END Treatment
+app
+  .route('/api/treatment')
+  .get(getTreatments)
+  .post(addTreatment)
+  .put(updateTreatment)
+  .delete(deleteTreatment)
+
+// API END People_organization
+app
+  .route('/api/people_organization')
+  .get(getPeople_organizations)
+  .post(addPeople_organization)
+  .put(updatePeople_organization)
+  .delete(deletePeople_organization)
+
+// API END Soil
+app
+  .route('/api/soil')
+  .get(getSoils)
+  .post(addSoil)
+  .put(updateSoil)
+  .delete(deleteSoil)
+
+  // API END Weather_data
+app
+  .route('/api/weather_data')
+  .get(getWeather_datas)
+  .post(addWeather_data)
+  .put(updateWeather_data)
+  .delete(deleteWeather_data)
 
 // API END Point
 app
