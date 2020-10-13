@@ -522,7 +522,7 @@ const getExperiments = (request, response) => {
 }
 
 const addExperiment = (request, response) => {
-  const { description, date, person, organization, date_start, date_end, model_simulation, start_days, days_weather, years_prognostics, time_start, time_end, initial_plant} = request.body
+  const { description, date, person, organization, date_start, date_end, model_simulation, start_days, days_weather, years_prognostics, time_start, time_end, initial_plant } = request.body
   pool.query('INSERT INTO experiment (id, description, date, person, organization, date_start, date_end, model_simulation, start_days, days_weather, years_prognostics, time_start, time_end, initial_plant) VALUES (nextval(\'seq_experiment_id\'),$1, $2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)', [description, date, person, organization, date_start, date_end, model_simulation, start_days, days_weather, years_prognostics, time_start, time_end, initial_plant], error => {
     if (error) {
       console.log(error)
@@ -972,19 +972,19 @@ const updateExperiment_virus = (request, response) => {
       throw error
     }
     response.status(201).json({ status: 'success', message: 'Experiment_virus updated.' })
-  }) 
+  })
 }
 
 const deleteExperiment_virus = (request, response) => {
   const { experiment } = request.body
-  pool.query('DELETE FROM experiment_virus where experiment = $1', [experiment], error => { 
+  pool.query('DELETE FROM experiment_virus where experiment = $1', [experiment], error => {
     if (error) {
       console.log(error)
       throw error
     }
     response.status(201).json({ status: 'success', message: 'Experiment_virus deleted.' })
   })
-} 
+}
 
 // API CRUD EXPERIMENT_WEATHER
 const getExperiments_weather = (request, response) => {
@@ -1072,9 +1072,178 @@ const deleteExperiment_year = (request, response) => {
   })
 }
 
-// API CRUD
-// API CRUD
-// API CRUD
+// API CRUD TRAP
+const getTraps = (request, response) => {
+  pool.query('SELECT * FROM trap', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addTrap = (request, response) => {
+  const { lenght, width, trap_type, latitude, longitude, height, station, description, profundity } = request.body
+  pool.query('INSERT INTO trap(lenght, width, trap_type, latitude, longitude, height, station, description, profundity) VALUES ($1, $2, $3,$4,$5,$6,$7,$8,$9)', [lenght, width, trap_type, latitude, longitude, height, station, description, profundity], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Trap added.' })
+  })
+}
+
+const updateTrap = (request, response) => {
+  const { id, lenght, width, trap_type, latitude, longitude, height, station, description, profundity } = request.body
+  pool.query('UPDATE trap set lenght= $1, width= $2, trap_type= $3, latitude= $4, longitude= $5, height= $6, station= $7, description= $8, profundity= $9 where id = $10', [lenght, width, trap_type, latitude, longitude, height, station, description, profundity, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Trap updated.' })
+  })
+}
+
+const deleteTrap = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM trap where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Trap deleted.' })
+  })
+}
+
+// API CRUD STATION
+const getStations = (request, response) => {
+  pool.query('SELECT * FROM station', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addStation = (request, response) => {
+  const { description, city, nickname, google, organization, code_organization, station_type  ,latitude, longitude, altitude, active } = request.body
+  pool.query('INSERT INTO station (xxx) VALUES (nextval(\'___\'),$1, $2)', [xxx], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'xxxx added.' })
+  })
+}
+
+const updateStation = (request, response) => {
+  const { xxx } = request.body
+  pool.query('UPDATE xxx set description = $,  where id = $', [xxx], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'xxxx updated.' })
+  })
+}
+
+const deleteStation = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM xxx where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'xxx deleted.' })
+  })
+}
+
+
+// API CRUD TRAP_TYPE
+const getTrap_types = (request, response) => {
+  pool.query('SELECT * FROM trap_type', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addTrap_type = (request, response) => {
+  const { description } = request.body
+  pool.query('INSERT INTO trap_type(description) VALUES (nextval(\'id_trap_type\'),$1)', [description], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Trap_type added.' })
+  })
+}
+
+const updateTrap_type = (request, response) => {
+  const { id, description } = request.body
+  pool.query('UPDATE trap_type set description = $1,  where id = $2', [description, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Trap_type updated.' })
+  })
+}
+
+const deleteTrap_type = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM trap_type where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Trap_type deleted.' })
+  })
+}
+
+// API TREATMENT
+const getTreatments = (request, response) => {
+  pool.query('SELECT * FROM treatment', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addTreatment = (request, response) => {
+  const { cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant} = request.body
+  pool.query('INSERT INTO treatment(id, cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant) VALUES (nextval(\'id_treatment\'),$1, $2, $3,$4,$5,$6,$7,$8,$9,$10,$11)', [cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Treatment added.' })
+  })
+}
+
+const updateTreatment = (request, response) => {
+  const { cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant, id } = request.body
+  pool.query('UPDATE treatment set cultivar= $1, start_simulation= $2, experiment= $3, station= $4, soil= $5, weather_simulation= $6, description= $7, observation_date= $8, number_days= $9, observation_id= $10, initial_plant= $11 ,  where id = $12', [cultivar, start_simulation, experiment, station, soil, weather_simulation, description, observation_date, number_days, observation_id, initial_plant, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Treatment updated.' })
+  })
+}
+
+const deleteTreatment = (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM treatment where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Treatment deleted.' })
+  })
+}
 
 // API Endpoint
 app
@@ -1301,6 +1470,38 @@ app
   .post(addExperiment_year)
   .put(updateExperiment_year)
   .delete(deleteExperiment_year)
+
+// API END Trap
+app
+  .route('/api/trap')
+  .get(getTraps)
+  .post(addTrap)
+  .put(updateTrap)
+  .delete(deleteTrap)
+
+// API END Station
+app
+  .route('/api/station')
+  .get(getStations)
+  .post(addStation)
+  .put(updateStation)
+  .delete(deleteStation)
+
+// API END Trap_type
+app
+  .route('/api/trap_type')
+  .get(getTrap_types)
+  .post(addTrap_type)
+  .put(updateTrap_type)
+  .delete(deleteTrap_type)
+  
+  // API END Treatment
+  app
+    .route('/api/treatment')
+    .get(getTreatments)
+    .post(addTreatment)
+    .put(updateTreatment)
+    .delete(deleteTreatment)
 
 // API END Point
 app
