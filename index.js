@@ -899,49 +899,49 @@ const deleteExperiment_cultivar = (request, response) => {
 //   })
 // }
 
-// // API CRUD EXPERIMENT_STATION
+// API CRUD EXPERIMENT_STATION
 
-// const getExperiments_station = (request, response) => {
-//   pool.query('SELECT * FROM experiment_station', (error, results) => {
-//     if (error) {
-//       throw error
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
+const getExperiments_station = (request, response) => {
+  pool.query('SELECT * FROM experiment_station', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
 
-// const addExperiment_station = (request, response) => {
-//   const { station, experiment, soil, weather_simulation, weather_disease } = request.body
-//   pool.query('INSERT INTO station, expriment, soil, weather_simulation, weather_disease) VALUES ($1, $2, $3,$4,$5)', [tation, experiment, soil, weather_simulation, weather_disease], error => {
-//     if (error) {
-//       console.log(error)
-//       throw error
-//     }
-//     response.status(201).json({ status: 'success', message: 'Experiment_station added.' })
-//   })
-// }
+const addExperiment_station = (request, response) => {
+  const { station, experiment, soil, weather_simulation, weather_disease } = request.body
+  pool.query('INSERT INTO experiment_station ( station, experiment, soil, weather_simulation, weather_disease) VALUES ($1, $2, $3,$4,$5)', [station, experiment, soil, weather_simulation, weather_disease], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_station added.' })
+  })
+}
 
-// const updateExperiment_station = (request, response) => {
-//   const { station, experiment, soil, weather_simulation, weather_disease } = request.body
-//   pool.query('UPDATE experiment_station set experiment= $1, soil= $2, weather_simulation= $3, weather_disease= $4 where station = $5', [station, experiment, soil, weather_simulation, weather_disease], error => {
-//     if (error) {
-//       console.log(error)
-//       throw error
-//     }
-//     response.status(201).json({ status: 'success', message: 'Experiment_station updated.' })
-//   })
-// }
+const updateExperiment_station = (request, response) => {
+  const { station, experiment, soil, weather_simulation, weather_disease } = request.body
+  pool.query('UPDATE experiment_station set experiment= $1, soil= $2, weather_simulation= $3, weather_disease= $4 where station = $5', [station, experiment, soil, weather_simulation, weather_disease], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_station updated.' })
+  })
+}
 
-// const deleteExperiment_station = (request, response) => {
-//   const { experiment } = request.body
-//   pool.query('DELETE FROM experiment_station where station = $1', [experiment], error => {
-//     if (error) {
-//       console.log(error)
-//       throw error
-//     }
-//     response.status(201).json({ status: 'success', message: 'Experiment_station deleted.' })
-//   })
-// }
+const deleteExperiment_station = (request, response) => {
+  const { experiment, station} = request.body
+  pool.query('DELETE FROM experiment_station where station = $1 and station = $2', [experiment, station], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Experiment_station deleted.' })
+  })
+}
 
 // API CRUD EXPERIMENT_VIRUS
 const getExperiments_virus = (request, response) => {
@@ -1374,6 +1374,92 @@ const deleteWeather_data = (request, response) => {
   })
 }
 
+// API TREATMENT_OUTPUT
+const getTreatment_outputs = (request, response) => {
+  pool.query('SELECT * FROM treatment_output', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addTreatment_output = (request, response) => {
+  const { treatment, variable, data_type, data_value_observed, data_value_simulated, line, data_julian, date, time} = request.body
+  pool.query('INSERT INTO treatment_output(treatment, variable, data_type, data_value_observed, data_value_simulated, line, data_julian, date, time) VALUES ($1, $2,$3,$4, $5,$6,$7,$8,$9)', [treatment, variable, data_type, data_value_observed, data_value_simulated, line, data_julian, date, time], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Treatment_output added.' })
+  })
+}
+
+const updateTreatment_output = (request, response) => {
+  const { treatment, variable, data_type, data_value_observed, data_value_simulated, line, data_julian, date, time } = request.body
+  pool.query('UPDATE treatment_output set data_type= $1, data_value_observed= $2, data_value_simulated= $3, line= $4, data_julian= $5, date= $6, time= $7,  where treatment = $8 and variable=$9', [data_type, data_value_observed, data_value_simulated, line, data_julian, date, time, treatment, variable ], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Treatment_output updated.' })
+  })
+}
+
+const deleteTreatment_output= (request, response) => {
+  const { treatment, variable } = request.body
+  pool.query('DELETE FROM treatment_output where treatment = $1 and variable = $2', [treatment, variable], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Treatment_output deleted.' })
+  })
+}
+
+// API WEATHER_SIMULATION
+const getWeather_simulations = (request, response) => {
+  pool.query('SELECT * FROM weather_simulation', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addWeather_simulation = (request, response) => {
+  const { description, start_period, end_period, station, provider, tipo} = request.body
+  pool.query('INSERT INTO weather_simulation(id, description, start_period, end_period, station, provider, tipo) VALUES (nextval(\'id_weather_simulation\'),$1, $2,$3,$4, $5,$6)', [description, start_period, end_period, station, provider, tipo], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Weather_simulation added.' })
+  })
+}
+
+const updateWeather_simulation = (request, response) => {
+  const { id, description, start_period, end_period, station, provider, tipo } = request.body
+  pool.query('UPDATE weather_simulation set description=$1, start_period=$2, end_period=$3, station=$4, provider=$5, tipo= $6 where id = $7', [description, start_period, end_period, station, provider, tipo, id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Weather_simulation updated.' })
+  })
+}
+
+const deleteWeather_simulation= (request, response) => {
+  const { id } = request.body
+  pool.query('DELETE FROM weather_simulation where id = $1', [id], error => {
+    if (error) {
+      console.log(error)
+      throw error
+    }
+    response.status(201).json({ status: 'success', message: 'Weather_simulation deleted.' })
+  })
+}
+
 // API Endpoint
 app
   .route('/')
@@ -1568,13 +1654,13 @@ app
 //   .put(updateExperiment_pest)
 //   .delete(deleteExperiment_pest)
 
-// // API END Experiment_station
-// app
-//   .route('/api/experiment_station')
-//   .get(getExperiments_station)
-//   .post(addExperiment_station)
-//   .put(updateExperiment_station)
-//   .delete(deleteExperiment_station)
+// API END Experiment_station
+app
+  .route('/api/experiment_station')
+  .get(getExperiments_station)
+  .post(addExperiment_station)
+  .put(updateExperiment_station)
+  .delete(deleteExperiment_station)
 
 // API END Experiment_virus
 app
@@ -1637,8 +1723,8 @@ app
   .route('/api/people_organization')
   .get(getPeople_organizations)
   .post(addPeople_organization)
-  .put(updatePeople_organization)
-  .delete(deletePeople_organization)
+  // .put(updatePeople_organization)
+  // .delete(deletePeople_organization)
 
 // API END Soil
 app
@@ -1655,6 +1741,22 @@ app
   .post(addWeather_data)
   .put(updateWeather_data)
   .delete(deleteWeather_data)
+
+  // API END Treatment_output
+app
+  .route('/api/treatment_output')
+  .get(getTreatment_outputs)
+  .post(addTreatment_output)
+  .put(updateTreatment_output)
+  .delete(deleteTreatment_output)
+
+  // API END Weather_simulation
+app
+  .route('/api/weather_simulation')
+  .get(getWeather_simulations)
+  .post(addWeather_simulation)
+  .put(updateWeather_simulation)
+  .delete(deleteWeather_simulation) 
 
 // API END Point
 app
